@@ -27,13 +27,6 @@ Template.body.helpers({
   },
 });
 
-Tasks.insert({
-    text,
-    createdAt: new Date(), // current time
-    owner: Meteor.userId(),
-    username: Meteor.user().username,
-  });
-
 Template.body.events({
     'submit .new-task'(event) {
       // Prevent default browser form submit
@@ -47,8 +40,11 @@ Template.body.events({
       Tasks.insert({
         text,
         createdAt: new Date(), // current time
+        owner: Meteor.userId(),
+        username: Meteor.user().username,
       });
-   
+
+      Meteor.call('tasks.insert', text);
       // Clear form
       target.text.value = '';
     },
